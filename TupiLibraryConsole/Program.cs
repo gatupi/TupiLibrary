@@ -23,7 +23,7 @@ namespace TupiLibraryConsole
 
             var cpf = "123.132.789-89";
 
-            Console.WriteLine($"{nameof(cpf)}: {cpf} - Valid: {TupiComparison.ValidateCpfSyntax(cpf)}");
+            Console.WriteLine($"{nameof(cpf)}: {cpf} - Valid: {TupiValidation.ValidateCpfSyntax(cpf)}");
         }
     }
 
@@ -55,16 +55,19 @@ namespace TupiLibraryConsole
                 _ => throw new Exception($"Unexpected error!"),
             };
         }
+    }
 
+    public static class TupiValidation
+    {
         public static bool ValidateCpfSyntax(string cpfValue) => ValidateCpfSyntax(cpfValue, CpfSyntaxOption.Both);
         public static bool ValidateCpfSyntax(string cpfValue, CpfSyntaxOption option)
         {
-            var patterns = new string[] { @"^[0-9]{3}(\.[0-9]{3}){2}-[0-9]{2}$", @"^[0-9]{11}$"};
+            var patterns = new string[] { @"^[0-9]{3}(\.[0-9]{3}){2}-[0-9]{2}$", @"^[0-9]{11}$" };
 
             if (option != CpfSyntaxOption.Both)
                 return Regex.Match(cpfValue, patterns[(int)option], RegexOptions.Singleline).Success;
 
-            foreach(var pattern in patterns)
+            foreach (var pattern in patterns)
             {
                 if (Regex.Match(cpfValue, pattern, RegexOptions.Singleline).Success)
                     return true;
